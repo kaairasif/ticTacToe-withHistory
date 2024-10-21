@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.box {
+  width: 200px;
+  max-width: 200px;
+  padding: 10px;
+  /* height: 200px; */
+  /* border: 1px solid coral; */
+  margin: 0 auto;
+  resize: both;
+  overflow: clip;
+  white-space: nowrap;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}
+.box:hover {
+  overflow: visible;
+}
