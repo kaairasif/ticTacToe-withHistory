@@ -17,7 +17,39 @@
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
-
+.game {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  background: rgb(233, 232, 232);
+  max-width: fit-content;
+  margin: 0 auto;
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px rgba(50,50,50,0.10);
+  
+}
+.game__board .flex {
+  justify-content: center;
+}
+.game__history-title {
+  background: #333;
+  padding:  5px 15px;
+  border-radius: 5px;
+  color: #fff;
+  margin-bottom: 5px;
+}
+.game__history ol > li:not(:first-child) > button {
+  background: #cacaca;
+  margin: 3px 0;
+  padding: 3px 10px;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+}
+.game__history-active > button {
+  background: #a1a1a1 !important;
+}
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

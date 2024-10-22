@@ -12,10 +12,8 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-export default function Game() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-  const [xIsNext, setXIsNext] = useState(true);
-
+ function Board({xIsNext, squares, onPlay}) {
+ 
   const winner = calculateWinner(squares);
   let status;
 
@@ -24,6 +22,7 @@ export default function Game() {
   } else {
     status = "Next Player " + (xIsNext ? "X" : "O");
   }
+  
 
   function handClick(i) {
     if (squares[i] || calculateWinner(squares)) {
@@ -35,10 +34,10 @@ export default function Game() {
     } else {
       nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    setXIsNext(!xIsNext);
+    onPlay(nextSquares)
   }
 
+  
   return (
     <>
       <div>{status}</div>
@@ -61,6 +60,64 @@ export default function Game() {
       </div>
     </>
   );
+}
+
+
+export default function Game() {
+  const [history, setHistory] = useState([Array(9).fill(null)]);
+  const [xIsNext, setXIsNext] = useState(true);
+  const [currentmove, setCurrentmove] = useState(0);
+  
+
+  const currentSquares = history[currentmove];
+
+  function handlePlay(nextSquares) {
+    setXIsNext(!xIsNext);
+    const nextHistry = [...history.slice(0, currentmove + 1), nextSquares]
+    console.log("🚀 ~ handlePlay ~ nextHistry:", nextHistry)
+    setHistory(nextHistry);
+    setCurrentmove(nextHistry.length - 1)
+  }
+
+  function jumpTo(e, move) {
+    const grandParent = e.target.closest("ol").querySelectorAll("li");
+    const parent = e.target.closest("li");
+    for(let el of grandParent) {
+      el.classList.remove("game__history-active")
+    }
+    parent.classList.add("game__history-active")
+    setCurrentmove(move);
+    setXIsNext(move % 2 === 0)
+  }
+
+  const moves = history.map((squares, move) => {
+    let description;
+    if(move > 0) {
+      description = `Go to the move # ${move}`
+    } else {
+      description = `title`;
+    }
+
+    return (
+      <li key={move}>
+        <button onClick={(e) => jumpTo(e, move)} >{description === 'title' ? <div className="game__history-title">Go to start the game</div>: description }</button>
+      </li>
+    )
+  })
+
+  return (
+    <div className="game">
+      <div className="game__board">
+        <Board 
+        xIsNext={xIsNext} 
+        squares={currentSquares} 
+        onPlay={handlePlay} />
+      </div>
+      <div className="game__history">
+        <ol>{moves}</ol>
+      </div>
+    </div>
+  )
 }
 
 function calculateWinner(squares) {
